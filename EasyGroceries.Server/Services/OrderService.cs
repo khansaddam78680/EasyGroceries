@@ -8,13 +8,15 @@ namespace EasyGroceries.Server.Service
         private const decimal LOYALTY_MEMBERSHIP_PRICE = 5m;
         private const decimal LOYALITY_DISCOUNT = 0.2m;
 
-        public Order CheckoutOrder(Order order)
+        public Order CheckoutOrder(Order order, List<Product> products)
         {
             if (order.HasLoyaltyMembership)
             {
                 foreach(var cart in order.CartItems)
                 {
+                    var product = products.FirstOrDefault(x => x.Id == cart.ProductId);
                     cart.TotalPrice = cart.UnitPrice * cart.Quantity * (1 - LOYALITY_DISCOUNT);
+                    cart.IsPhysical = product != null ? product.IsPhysical : false;
                 }
 
                 order.CartItems.Add(new CartItem
@@ -32,7 +34,9 @@ namespace EasyGroceries.Server.Service
             {
                 foreach (var cart in order.CartItems)
                 {
+                    var product = products.FirstOrDefault(x => x.Id == cart.ProductId);
                     cart.TotalPrice = cart.UnitPrice * cart.Quantity;
+                    cart.IsPhysical = product != null ? product.IsPhysical : false;
                 }
             }
 

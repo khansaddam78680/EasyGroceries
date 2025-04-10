@@ -40,7 +40,8 @@ namespace EasyGroceries.Server.Controllers
         public IActionResult Checkout([FromBody]Order order)
         {
             order.OrderId = _orderNo++;
-            var placedOrder = _orderService.CheckoutOrder(order);
+            order.CustomerId = Random.Shared.Next(1500, 150000);
+            var placedOrder = _orderService.CheckoutOrder(order , _products);
             var shippingData = _shippingService.GenerateSlip(placedOrder);
             return Ok(shippingData);
         }

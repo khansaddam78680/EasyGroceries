@@ -6,14 +6,14 @@ import { CartItem } from './models/Order';
 import './App.css';
 
 const App: React.FC = () => {
-    const [cart, setCart] = useState<CartItem[]>([]);
+    const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [currentStep, setCurrentStep] = useState<'shopping' | 'checkout' | 'confirmation'>('shopping');
     const [shippingSlip, setShippingSlip] = useState<any>(null);
 
     const handleAddToCart = (product: any, quantity: number) => {
         if (quantity <= 0) return;
 
-        setCart(prevCart => {
+        setCartItems(prevCart => {
             const existingItem = prevCart.find(item => item.productId === product.id);
             if (existingItem) {
                 return prevCart.map(item =>
@@ -44,7 +44,7 @@ const App: React.FC = () => {
     const handlePlaceOrder = (slip: any) => {
         setShippingSlip(slip);
         setCurrentStep('confirmation');
-        setCart([]);
+        setCartItems([]);
     };
 
     const startNewOrder = () => {
@@ -57,7 +57,7 @@ const App: React.FC = () => {
             <header>
                 <h1>EasyGroceries</h1>
                 <div className="cart-summary" onClick={() => setCurrentStep('checkout')}>
-                    🛒 {cart.reduce((sum, item) => sum + item.quantity, 0)} items
+                    🛒 {cartItems.reduce((sum, item) => sum + item.quantity, 0)} items
                 </div>
             </header>
 
@@ -67,7 +67,7 @@ const App: React.FC = () => {
                 )}
                 {currentStep === 'checkout' && (
                     <Checkout
-                        items={cart}
+                        cartItems={cartItems}
                         onBack={() => setCurrentStep('shopping')}
                         onOrderPlaced={handlePlaceOrder}
                     />

@@ -4,6 +4,6 @@ namespace EasyGroceries.Server.Services.Contracts
 {
     public interface IOrderService
     {
-        Order CheckoutOrder(Order order);
+        Order CheckoutOrder(Order order, List<Product> products);
     }
 }

@@ -10,7 +10,7 @@ const Products: React.FC<{ onAddToCart: (product: Product, quantity: number) => 
     useEffect(() => {
         const fetchProducts = async () => {
             const response = await getProducts();
-            setProducts(response);
+            setProducts(response.data);
         };
         fetchProducts();
     }, []);

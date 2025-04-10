@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { CartItem, ShippingInfo, Order } from './models/Order';
+import { CartItem, ShippingInfo, Order, ShippingSlip } from './models/Order';
 import { placeOrder } from './services/OrderService';
-import './App.css';
+//import './App.css';
 
 const Checkout: React.FC<{
-    items: CartItem[];
+    cartItems: CartItem[];
     onBack: () => void;
     onOrderPlaced: (shippingSlip: any) => void;
-}> = ({ items, onBack, onOrderPlaced }) => {
-    const [shippingInfo, setShippingInfo] = useState<ShippingInfo>({
+}> = ({ cartItems, onBack, onOrderPlaced }) => {
+    const [shippingDetails, setShippingDetails] = useState<ShippingInfo>({
         name: '',
         address: '',
         city: '',
@@ -18,7 +18,7 @@ const Checkout: React.FC<{
     const [hasLoyaltyMembership, setHasLoyaltyMembership] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const subtotal = items.reduce((sum, item) => sum + item.totalPrice, 0);
+    const subtotal = cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
     const discount = hasLoyaltyMembership ? subtotal * 0.2 : 0;
     const loyaltyCost = hasLoyaltyMembership ? 5 : 0;
     const total = subtotal - discount + loyaltyCost;
@@ -28,14 +28,14 @@ const Checkout: React.FC<{
         setIsSubmitting(true);
 
         const order: Order = {
-            items,
+            cartItems,
             hasLoyaltyMembership,
-            shippingInfo,
+            shippingDetails,
         };
 
         try {
             const response = await placeOrder(order);
-            onOrderPlaced(response);
+            onOrderPlaced(response.data);
         } catch (error) {
             console.error('Order failed:', error);
         } finally {
@@ -49,7 +49,7 @@ const Checkout: React.FC<{
             < div className="order-summary" >
                 <h3>Your Order </h3>
                 {
-                    items.map(item => (
+                    cartItems.map(item => (
                         <div key={`${item.productId}-${item.productName}`} className="order-item" >
                             <span>{item.productName} "{item.description}" </span>
                             < span > Qty: {item.quantity} </span>
@@ -87,8 +87,8 @@ const Checkout: React.FC<{
                     <label>Name: </label>
                     < input
                         type="text"
-                        value={shippingInfo.name}
-                        onChange={(e) => setShippingInfo({ ...shippingInfo, name: e.target.value })}
+                        value={shippingDetails.name}
+                        onChange={(e) => setShippingDetails({ ...shippingDetails, name: e.target.value })}
                         required
                     />
                 </div>
@@ -96,8 +96,8 @@ const Checkout: React.FC<{
                     <label>Address: </label>
                     < input
                         type="text"
-                        value={shippingInfo.address}
-                        onChange={(e) => setShippingInfo({ ...shippingInfo, address: e.target.value })}
+                        value={shippingDetails.address}
+                        onChange={(e) => setShippingDetails({ ...shippingDetails, address: e.target.value })}
                         required
                     />
                 </div>
@@ -105,8 +105,8 @@ const Checkout: React.FC<{
                     <label>City: </label>
                     < input
                         type="text"
-                        value={shippingInfo.city}
-                        onChange={(e) => setShippingInfo({ ...shippingInfo, city: e.target.value })}
+                        value={shippingDetails.city}
+                        onChange={(e) => setShippingDetails({ ...shippingDetails, city: e.target.value })}
                         required
                     />
                 </div>
@@ -114,8 +114,8 @@ const Checkout: React.FC<{
                     <label>Pin Code: </label>
                     < input
                         type="text"
-                        value={shippingInfo.pinCode}
-                        onChange={(e) => setShippingInfo({ ...shippingInfo, pinCode: e.target.value })}
+                        value={shippingDetails.pinCode}
+                        onChange={(e) => setShippingDetails({ ...shippingDetails, pinCode: e.target.value })}
                         required
                     />
                 </div>
@@ -123,8 +123,8 @@ const Checkout: React.FC<{
                     <label>Mobile Number: </label>
                     < input
                         type="text"
-                        value={shippingInfo.pinCode}
-                        onChange={(e) => setShippingInfo({ ...shippingInfo, mobileNo: e.target.value })}
+                        value={shippingDetails.mobileNo}
+                        onChange={(e) => setShippingDetails({ ...shippingDetails, mobileNo: e.target.value })}
                         required
                     />
                 </div>

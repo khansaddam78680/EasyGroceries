@@ -25,5 +25,5 @@ export interface ShippingSlip {
     customerId: number;
     orderNumber: number;
     cartItems: CartItem[];
-    shippingInfo: ShippingInfo;
+    totalAmount: number;
 }
