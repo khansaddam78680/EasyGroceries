@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CartItem, ShippingInfo, Order, ShippingSlip } from './models/Order';
 import { placeOrder } from './services/OrderService';
-//import './App.css';
+import './App.css';
 
 const Checkout: React.FC<{
     cartItems: CartItem[];
@@ -35,6 +35,7 @@ const Checkout: React.FC<{
 
         try {
             const response = await placeOrder(order);
+            console.log(response.data);
             onOrderPlaced(response.data);
         } catch (error) {
             console.error('Order failed:', error);
@@ -49,24 +50,28 @@ const Checkout: React.FC<{
             < div className="order-summary" >
                 <h3>Your Order </h3>
                 {
+                    cartItems.length === 0 ? (
+                        <p>Your cart is empty.</p>
+                    ) : (
                     cartItems.map(item => (
                         <div key={`${item.productId}-${item.productName}`} className="order-item" >
                             <span>{item.productName} "{item.description}" </span>
                             < span > Qty: {item.quantity} </span>
-                            <span>£{(item.totalPrice).toFixed(2)} </span>
+                            <span>&pound;{(item.totalPrice).toFixed(2)} </span>
                         </div>
+                    )
                     ))}
                 <div className="order-totals" >
-                    <div>Subtotal: £{subtotal.toFixed(2)} </div>
+                    <div>Subtotal: &pound;{subtotal.toFixed(2)} </div>
                     {
                         hasLoyaltyMembership && (
                             <>
-                                <div>Discount(20 %): -£{discount.toFixed(2)} </div>
-                                < div > Loyalty Membership: £5.00 </div>
+                                <div>Discount(20 %): -ï¿½{discount.toFixed(2)} </div>
+                                < div > Loyalty Membership: &pound;5.00 </div>
                             </>
                         )
                     }
-                    <div className="total" > Total: £{total.toFixed(2)} </div>
+                    <div className="total" > Total: &pound;{total.toFixed(2)} </div>
                 </div>
             </div>
 
@@ -78,7 +83,7 @@ const Checkout: React.FC<{
                             checked={hasLoyaltyMembership}
                             onChange={(e) => setHasLoyaltyMembership(e.target.checked)}
                         />
-                        Add EasyGroceries loyalty membership(£5)
+                        Add EasyGroceries loyalty membership(&pound;5)
                     </label>
                 </div>
 

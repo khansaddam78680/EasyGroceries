@@ -1,8 +1,7 @@
 import React from 'react';
-import { ShippingSlip } from './models/Order';
 import './App.css';
 
-const ShippingSlipComponent: React.FC<{ slip: ShippingSlip; onNewOrder: () => void }> = ({ slip, onNewOrder }) => {
+const ShippingSlipComponent: React.FC<{ slip: any; onNewOrder: () => void }> = ({ slip, onNewOrder }) => {
     return (
         <div className="shipping-slip" >
             <h2>Order Confirmation </h2>
@@ -16,10 +15,11 @@ const ShippingSlipComponent: React.FC<{ slip: ShippingSlip; onNewOrder: () => vo
                 {
                     slip.cartItems.map(item => (
                         <li key={`${item.productId}-${item.productName}`} >
-                            {item.productName} "{item.description}" – Qty: {item.quantity}
+                            {item.productName} "{item.description}"  Qty: {item.quantity}
                         </li>
                     ))}
             </ul>
+            <p> Total Price: {slip.totalPrice}</p>
 
             <button onClick={onNewOrder} > Start New Order </button>
         </div>

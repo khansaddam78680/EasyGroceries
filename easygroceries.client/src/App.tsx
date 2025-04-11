@@ -73,7 +73,7 @@ const App: React.FC = () => {
                     />
                 )}
                 {currentStep === 'confirmation' && shippingSlip && (
-                    <ShippingSlipComponent slip={shippingSlip.shippingSlip} onNewOrder={startNewOrder} />
+                    <ShippingSlipComponent slip={shippingSlip} onNewOrder={startNewOrder} />
                 )}
             </main>
         </div>

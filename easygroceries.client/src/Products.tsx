@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Product } from './models/Product';
 import { getProducts } from './services/OrderService';
-import './App.css';
+//import './App.css';
 
 const Products: React.FC<{ onAddToCart: (product: Product, quantity: number) => void }> = ({ onAddToCart }) => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -28,7 +28,7 @@ const Products: React.FC<{ onAddToCart: (product: Product, quantity: number) => 
                     <div key={product.id} className="product-card" >
                         <h3>{product.name} </h3>
                         < p > {product.description} </p>
-                        <p>£{product.price.toFixed(2)} </p>
+                        <p>&pound;{product.price.toFixed(2)} </p>
                         < div className="quantity-control" >
                             <input
                                 type="number"
